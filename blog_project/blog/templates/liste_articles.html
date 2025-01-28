@@ -1,0 +1,20 @@
+<!-- blog/templates/blog/liste_articles.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+</head>
+<body>
+    <h1>Liste des Articles</h1>
+    <ul>
+        {% for article in articles %}
+            <li>
+                <h2>{{ article.titre }}</h2>
+                <p>{{ article.contenu|truncatechars:100 }}</p>
+                <small>Publié le : {{ article.date_publication }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
