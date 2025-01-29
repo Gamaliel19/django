@@ -53,7 +53,6 @@
 
         .logo .highlight {
             color: gold;
-            /* Set the color of "Blog" to gold */
         }
 
         nav {
@@ -78,7 +77,6 @@
 
         .container {
             width: 60%;
-            /* Reduce the width from 80% to 60% */
             margin: 0 auto;
             flex: 1;
         }
@@ -89,6 +87,13 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            /* Zoom effect */
+        }
+
+        .article:hover {
+            transform: scale(1.02);
+            /* Zoom on hover */
         }
 
         .article h2 {
@@ -140,13 +145,16 @@
             display: flex;
             justify-content: center;
             gap: 10px;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
 
         footer input[type="email"] {
             padding: 8px;
             border-radius: 4px;
             border: 1px solid #ccc;
-            width: 250px;
+            width: 80%;
         }
 
         footer button {
@@ -163,7 +171,7 @@
         }
 
         .social-links {
-            margin-top: 5px;
+            margin-top: 20px;
         }
 
         .social-links a {
@@ -218,6 +226,147 @@
         .contact-info i {
             margin-right: 10px;
         }
+
+        /* Desktop styles */
+        @media (min-width: 1024px) {
+            footer {
+                display: grid;
+                grid-template-columns: 1fr;
+                /* Utilise une seule colonne pour tout centrer */
+                gap: 30px;
+                justify-items: center;
+                /* Centre tout le contenu horizontalement */
+                align-items: center;
+                /* Centre tout le contenu verticalement */
+            }
+
+            footer .contact,
+            footer form {
+                width: 50%;
+                /* Limite la largeur du contenu pour éviter qu'il soit trop large */
+            }
+
+            footer input[type="email"] {
+                width: 200%;
+                /* Augmente la largeur de l'input */
+            }
+
+            .newsletter {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                width: 30%;
+            }
+
+            .newsletter form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .newsletter input[type="email"] {
+                width: 90%;
+                /* Augmente légèrement la largeur */
+                text-align: center;
+                /* Centre le texte à l'intérieur */
+            }
+
+            .newsletter button {
+                width: auto;
+                /* Adapte la largeur au contenu */
+            }
+
+            footer .contact {
+                padding-right: 0;
+                /* Réduit l'espace à droite */
+                text-align: center;
+                /* Centre le texte dans la section contact */
+            }
+
+            footer form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                /* Centre les éléments du formulaire */
+            }
+
+            .social-links {
+                margin-top: 20px;
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                /* Centre les icônes sociales */
+            }
+        }
+
+        /* Scroll to top button */
+        #scrollToTopBtn {
+            position: fixed;
+            /* Fixed Position */
+            bottom: 20px;
+            /* Place it at the bottom */
+            right: 30px;
+            /* Place it to the right */
+            z-index: 100;
+            /* Sit on top */
+            border: none;
+            /* No border */
+            outline: none;
+            /* No outline */
+            background-color: #007bff;
+            /* Blue Background */
+            color: white;
+            /* White text */
+            cursor: pointer;
+            /* Pointer/hand icon */
+            padding: 10px;
+            /* Some padding */
+            border-radius: 5px;
+            /* Rounded corners */
+            display: none;
+            /* Hidden by default */
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav a {
+                margin-bottom: 10px;
+            }
+
+            .container {
+                width: 90%;
+            }
+
+            footer form {
+                width: 100%;
+            }
+
+            footer input[type="email"] {
+                width: 80%;
+            }
+
+            footer button {
+                width: 80%;
+            }
+
+            .social-links {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+            }
+        }
     </style>
 </head>
 
@@ -232,7 +381,7 @@
                 <a href="#">À propos</a>
                 <a href="#">Contact</a>
             </nav>
-            <i class="fas fa-moon theme-icon"></i> <!-- Moon icon for theme mode -->
+            <i class="fas fa-moon theme-icon"></i>
         </div>
     </header>
     <main class="container">
@@ -245,13 +394,19 @@
         </div>
         {% endfor %}
     </main>
+
+    <!-- Scroll to Top Button -->
+    <button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">↑</button>
+
     <footer>
-        <h4>S’abonner à notre newsletter</h4>
-        <form id="newsletter-form" method="POST">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="Votre email" required>
-            <button type="submit">S’abonner</button>
-        </form>
+        <section class="newsletter">
+            <h4>S’abonner à notre newsletter</h4>
+            <form id="newsletter-form" method="POST">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Votre email" required>
+                <button type="submit">S’abonner</button>
+            </form>
+        </section>
 
         <!-- Section Contact -->
         <section id="contact" class="contact">
@@ -262,15 +417,16 @@
                 <li><i class="fas fa-phone"></i> Téléphone: +235 60 05 23 24 ou +235 96 25 67 24</li>
                 <li><i class="fas fa-map-marker-alt"></i> Adresse: 123 Rue Avenue Kondol, Ndjamena, Tchad</li>
             </ul>
+
+            <div class="social-links">
+                <a href="https://www.linkedin.com/"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.facebook.com"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+            </div>
         </section>
 
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/yagali"><i class="fab fa-linkedin"></i></a>
-            <a href="https://www.facebook.com/nafou.gamaliel"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
-        </div>
-        <p id="newsletter-message"></p>
+        <p>&copy; 2025 Mon Blog - Tous droits réservés.</p>
     </footer>
 
     <script>
@@ -287,7 +443,6 @@
                 });
         });
 
-        // JavaScript to toggle theme mode
         document.querySelector('.theme-icon').addEventListener('click', function () {
             document.body.classList.toggle('dark-mode');
             const icon = document.querySelector('.theme-icon');
@@ -299,6 +454,24 @@
                 icon.classList.add('fa-moon');
             }
         });
+
+        // Scroll to Top Functionality
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        window.onscroll = function () {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll
+            });
+        }
     </script>
 </body>
 
