@@ -1,20 +1,305 @@
-<!-- blog/templates/blog/liste_articles.html -->
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <title>Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #333;
+            color: #f4f4f9;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        header.dark-mode {
+            background-color: #0056b3;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: flex-start;
+            width: 20%;
+        }
+
+        .logo .highlight {
+            color: gold;
+            /* Set the color of "Blog" to gold */
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .theme-icon {
+            cursor: pointer;
+        }
+
+        .container {
+            width: 60%;
+            /* Reduce the width from 80% to 60% */
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .article {
+            background: #fff;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin: 0 0 10px;
+        }
+
+        .article p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .article a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .article a:hover {
+            text-decoration: underline;
+        }
+
+        .dark-mode .article {
+            background: #444;
+        }
+
+        .dark-mode .article p {
+            color: #ccc;
+        }
+
+        .dark-mode .article a {
+            color: #0056b3;
+        }
+
+        footer {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .dark-mode footer {
+            background-color: #222;
+        }
+
+        footer h4 {
+            margin: 0 0 10px;
+        }
+
+        footer form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        footer input[type="email"] {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            width: 250px;
+        }
+
+        footer button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #0056b3;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        footer button:hover {
+            background-color: #003d82;
+        }
+
+        .social-links {
+            margin-top: 5px;
+        }
+
+        .social-links a {
+            margin: 0 5px;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+
+        .social-links .fa-facebook {
+            color: #3b5998;
+        }
+
+        .social-links .fa-twitter {
+            color: #1da1f2;
+        }
+
+        .social-links .fa-instagram {
+            color: #e1306c;
+        }
+
+        .contact {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            width: 60%;
+            text-align: center;
+        }
+
+        .contact h2 {
+            margin-bottom: 10px;
+        }
+
+        .contact p {
+            color: #555;
+        }
+
+        .contact-info {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-info li {
+            margin: 10px 0;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Liste des Articles</h1>
-    <ul>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Mon<span class="highlight">Blog</span></h1>
+            </div>
+            <nav>
+                <a href="#">Accueil</a>
+                <a href="#">À propos</a>
+                <a href="#">Contact</a>
+            </nav>
+            <i class="fas fa-moon theme-icon"></i> <!-- Moon icon for theme mode -->
+        </div>
+    </header>
+    <main class="container">
         {% for article in articles %}
-            <li>
-                <h2>{{ article.titre }}</h2>
-                <p>{{ article.contenu|truncatechars:100 }}</p>
-                <small>Publié le : {{ article.date_publication }}</small>
-            </li>
+        <div class="article">
+            <h2>{{ article.titre }}</h2>
+            <p><strong>Date de publication :</strong> {{ article.date_publication|date:"d/m/Y" }}</p>
+            <p>{{ article.contenu|slice:":200" }}...</p>
+            <a href="{% url 'detail_article' article.id %}">Lire plus</a>
+        </div>
         {% endfor %}
-    </ul>
+    </main>
+    <footer>
+        <h4>S’abonner à notre newsletter</h4>
+        <form id="newsletter-form" method="POST">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Votre email" required>
+            <button type="submit">S’abonner</button>
+        </form>
+
+        <!-- Section Contact -->
+        <section id="contact" class="contact">
+            <h2>Contactez-nous</h2>
+            <p>Vous avez une question ou souhaitez collaborer avec nous ? N'hésitez pas à nous contacter.</p>
+            <ul class="contact-info">
+                <li><i class="fas fa-envelope"></i> Email: contact@monblog.com</li>
+                <li><i class="fas fa-phone"></i> Téléphone: +235 60 05 23 24 ou +235 96 25 67 24</li>
+                <li><i class="fas fa-map-marker-alt"></i> Adresse: 123 Rue Avenue Kondol, Ndjamena, Tchad</li>
+            </ul>
+        </section>
+
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/yagali"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.facebook.com/nafou.gamaliel"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p id="newsletter-message"></p>
+    </footer>
+
+    <script>
+        document.getElementById('newsletter-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch("{% url 'abonnement_newsletter' %}", {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('newsletter-message').innerText = data.message;
+                });
+        });
+
+        // JavaScript to toggle theme mode
+        document.querySelector('.theme-icon').addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.theme-icon');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+    </script>
 </body>
+
 </html>
